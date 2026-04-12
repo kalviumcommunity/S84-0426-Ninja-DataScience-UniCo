@@ -108,3 +108,11 @@ Additional enhancements may include:
 This project is a step toward using data to improve education. By analyzing teaching quality, course difficulty, and student satisfaction, the project aims to provide institutions with practical insights that can support continuous improvement.
 
 With real student data and a stronger analytics pipeline, this project can evolve into a more impactful academic decision-support tool.
+
+### Python Version :
+python3 --version 
+Python 3.12.7
+
+### Conda Version :
+conda --version
+conda 24.1.2
