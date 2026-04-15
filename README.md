@@ -83,6 +83,13 @@ This repository is designed to demonstrate how student feedback can be converted
 - How satisfied are students overall?
 - What improvements can be made to the learning experience?
 
+## Final Project Insights (Milestone 4.44)
+
+Based on the initial exploratory data analysis and data visualization:
+- **Teaching Quality Distribution:** Feedback scores often exhibit a common peak, alerting us whether teaching standards are generally falling above or below the university average.
+- **Engagement Impact:** The correlation between student attendance rates and feedback scores highlights that disengaged students (lower attendance/outliers) may provide distinct kinds of survey feedback or perform worse.
+- **Measurable Improvements:** Generating basic descriptive statistics helps construct a data-driven baseline. Universities can measure the current teaching feedback average (mean) and strive to increase this metric incrementally each semester through targeted faculty training or course redesigns.
+
 ## Assumptions and Limitations
 
 This project currently assumes that the sample Kaggle dataset is representative enough to explore the core problem. However, there are a few limitations to note:
