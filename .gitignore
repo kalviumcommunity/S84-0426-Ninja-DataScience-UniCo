@@ -1,0 +1,18 @@
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Python cache & Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data (It's best practice not to push raw data to Git)
+data/raw/
+data/processed/
+
+# Mac/Windows OS files
+.DS_Store
+Thumbs.db
