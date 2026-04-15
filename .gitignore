@@ -10,7 +10,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data (It's best practice not to push raw data to Git)
-data/raw/
+# data/raw/
 data/processed/
 
 # Mac/Windows OS files
