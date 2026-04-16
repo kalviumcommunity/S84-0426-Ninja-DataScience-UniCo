@@ -29,7 +29,9 @@ S84-0426-Ninja-DataScience-UniCo/
 │   └── 02_data_visualization.ipynb # Matplotlib & Seaborn visual EDA
 │
 ├── src/
-│   └── data_utils.py    # Reusable Python scripts for data processing
+│   ├── app.py           # Real-Time Streamlit Feedback App
+│   ├── data_utils.py    # Reusable Python scripts for data processing
+│   └── update_dataset.py# Mentors and Courses updater script
 │
 └── README.md            # Project documentation
 ```
@@ -58,7 +60,13 @@ conda activate unico-env
 python src/data_utils.py
 ```
 
-**3. Run the Jupyter Notebooks:**
+**3. Collect live student feedback via the Web Portal:**
+```bash
+streamlit run src/app.py
+```
+This opens an interactive, real-world web form where students can review mentors (Sai, Ojas, Shivam) and courses. Data syncs instantly with the CSV folder!
+
+**4. Run the Jupyter Notebooks:**
 Open and run `01_data_exploration.ipynb` and `02_data_visualization.ipynb` directly in your IDE to reproduce the analysis and charts.
 
 ---
