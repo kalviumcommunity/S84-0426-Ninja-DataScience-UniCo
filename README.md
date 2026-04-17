@@ -75,3 +75,17 @@ Open and run `01_data_exploration.ipynb` and `02_data_visualization.ipynb` direc
 1. **Real-time Survey Integration:** Replace the static dataset with an automated pipeline collecting live student feedback.
 2. **Interactive Dashboards:** Transition from static Seaborn visualisations to an interactive dashboard (e.g., Tableau or PowerBI) for university administrators.
 3. **Sentiment Analysis:** Implement Natural Language Processing (NLP) on open-text feedback to systematically quantify qualitative student sentiment.
+
+---
+
+# Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+# Guidelines:
+
+Fork the repository
+Create a feature branch (git checkout -b feature/AmazingFeature)
+Commit your changes (git commit -m 'Add some AmazingFeature')
+Push to the branch (git push origin feature/AmazingFeature)
+Open a Pull Request
+
