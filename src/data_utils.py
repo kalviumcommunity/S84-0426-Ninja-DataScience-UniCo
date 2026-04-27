@@ -1,4 +1,10 @@
 import pandas as pd
+import os
+import sys
+
+# Ensure src directory is in the path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from config import RAW_DATA_PATH
 
 def load_and_clean_data(filepath):
     """
@@ -27,6 +33,6 @@ def load_and_clean_data(filepath):
 
 if __name__ == "__main__":
     # Test the function if script is run directly
-    df = load_and_clean_data('data/raw/teaching_quality_dataset.csv')
+    df = load_and_clean_data(RAW_DATA_PATH)
     print("Clean Data Sample:")
     print(df.head())

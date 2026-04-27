@@ -2,10 +2,15 @@ import streamlit as st
 import pandas as pd
 import datetime
 import os
+import sys
+
+# Ensure src directory is in the path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from config import RAW_DATA_PATH, COURSES, COURSE_MENTOR_MAP
 
 # --- Configuration & File Path ---
 st.set_page_config(page_title="Academic Feedback Portal", layout="wide", initial_sidebar_state="expanded")
-FILE_PATH = "data/raw/teaching_quality_dataset.csv"
+FILE_PATH = RAW_DATA_PATH
 
 # --- Styling ---
 st.markdown("""
@@ -18,13 +23,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Data Mapping ---
-courses = ["DSA", "OS", "How Humans languagues work", "Tools and Technique"]
-mentor_map = {
-    "DSA": "Ojas",
-    "OS": "Shivam",
-    "How Humans languagues work": "Sai",
-    "Tools and Technique": "Sai"
-}
+courses = COURSES
+mentor_map = COURSE_MENTOR_MAP
 
 # --- Application Header ---
 st.title("Academic Quality & Feedback Portal")
@@ -39,7 +39,7 @@ with col_form:
     st.markdown("Please complete all fields to submit an official course review.")
     
     # Selection logic outside form for real-time mentor mapping
-    selected_course = st.selectbox("Academic Subect", courses, help="Select the subject you are currently evaluating.")
+    selected_course = st.selectbox("Academic Subject", courses, help="Select the subject you are currently evaluating.")
     assigned_mentor = mentor_map[selected_course]
     
     st.info(f"**Instructor of Record:** {assigned_mentor}")

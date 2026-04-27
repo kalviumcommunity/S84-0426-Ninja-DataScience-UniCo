@@ -1,15 +1,15 @@
 import pandas as pd
 import random
 import os
+import sys
+
+# Ensure src directory is in the path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from config import RAW_DATA_PATH, PROCESSED_DATA_PATH, COURSES, COURSE_MENTOR_MAP
 
 # New Courses and mappings
-course_to_mentor = {
-    "DSA": "Ojas",
-    "OS": "Shivam",
-    "How Humans languagues work": "Sai",
-    "Tools and Technique": "Sai"
-}
-courses = list(course_to_mentor.keys())
+course_to_mentor = COURSE_MENTOR_MAP
+courses = COURSES
 
 def transform_dataset(filepath):
     # Load dataset
@@ -33,11 +33,11 @@ def transform_dataset(filepath):
 
 if __name__ == "__main__":
     # Transform raw
-    transform_dataset('data/raw/teaching_quality_dataset.csv')
+    transform_dataset(RAW_DATA_PATH)
     
     # If processed exists, you can rebuild it via src/data_utils.py later
     # But let's also transform it if it's there
-    if os.path.exists('data/processed/teaching_quality_clean.csv'):
-        transform_dataset('data/processed/teaching_quality_clean.csv')
+    if os.path.exists(PROCESSED_DATA_PATH):
+        transform_dataset(PROCESSED_DATA_PATH)
     
     print("Dataset populated with real-world names and subjects!")
