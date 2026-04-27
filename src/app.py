@@ -3,6 +3,8 @@ import pandas as pd
 import datetime
 import os
 import sys
+import plotly.express as px
+import plotly.graph_objects as go
 
 # Ensure src directory is in the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -103,26 +105,73 @@ with col_dashboard:
         
         # Render Metrics
         m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Total Evaluations", f"{total_evaluations:,}")
-        m2.metric("Mean Quality Score", f"{avg_score:.2f} / 5.0")
-        m3.metric("Mean Attendance", f"{avg_attendance:.1f}%")
-        m4.metric("High Risk Flags", f"{risk_entries}")
+        
+        # Calculate deltas (mocked against a previous baseline for visual effect)
+        avg_score_delta = round(avg_score - 3.5, 2)
+        avg_attendance_delta = round(avg_attendance - 70, 1)
+        
+        m1.metric("Total Evaluations", f"{total_evaluations:,}", delta=f"+{len(df_live.tail(10))} recent")
+        m2.metric("Mean Quality Score", f"{avg_score:.2f} / 5.0", delta=avg_score_delta)
+        m3.metric("Mean Attendance", f"{avg_attendance:.1f}%", delta=f"{avg_attendance_delta}%")
+        m4.metric("High Risk Flags", f"{risk_entries}", delta="Action Required" if risk_entries > 0 else "All Good", delta_color="inverse")
         
         st.markdown("<br>", unsafe_allow_html=True)
         
         # --- Interactive Data Visualizations ---
         st.markdown("<span class='card-header'>📊 Visual Analytics: Course Comparison</span>", unsafe_allow_html=True)
         
-        course_agg = df_live.groupby(['course_id', 'instructor_id']).agg(
-            evaluations=('student_id', 'count'),
-            avg_score=('feedback_score', 'mean'),
-            avg_attendance=('attendance_rate', 'mean')
-        ).reset_index()
+        # Tabs for different graph views
+        tab1, tab2, tab3 = st.tabs(["Quality Scores", "Attendance Trends", "Instructor Risk Analysis"])
         
-        # Native Streamlit Chart (Interactive)
-        chart_data = course_agg.set_index('course_id')[['avg_score']]
-        st.bar_chart(chart_data, color="#3498db")
-        
+        with tab1:
+            course_agg = df_live.groupby(['course_id', 'instructor_id']).agg(
+                evaluations=('student_id', 'count'),
+                avg_score=('feedback_score', 'mean'),
+                avg_attendance=('attendance_rate', 'mean')
+            ).reset_index()
+            
+            fig1 = px.bar(course_agg, x='course_id', y='avg_score', color='instructor_id',
+                         title="Average Quality Score by Course",
+                         labels={'course_id': 'Course', 'avg_score': 'Average Score (out of 5)'},
+                         text_auto='.2f', color_discrete_sequence=px.colors.qualitative.Pastel)
+            fig1.update_layout(yaxis_range=[0, 5])
+            st.plotly_chart(fig1, use_container_width=True)
+
+        with tab2:
+            fig2 = px.box(df_live, x='course_id', y='attendance_rate', color='course_id',
+                          title="Attendance Rate Distribution by Course",
+                          labels={'course_id': 'Course', 'attendance_rate': 'Attendance Rate (%)'})
+            st.plotly_chart(fig2, use_container_width=True)
+            
+        with tab3:
+            risk_counts = df_live['risk_level'].value_counts().reset_index()
+            risk_counts.columns = ['Risk Level', 'Count']
+            fig3 = px.pie(risk_counts, names='Risk Level', values='Count', 
+                          title="Overall Risk Distribution",
+                          color='Risk Level', color_discrete_map={'Low': '#2ecc71', 'High': '#e74c3c'},
+                          hole=0.4)
+            st.plotly_chart(fig3, use_container_width=True)
+            
+        # Optional: Radar chart for multi-dimensional metrics
+        st.markdown("<span class='card-header'>🕸 Multi-metric Course Radar</span>", unsafe_allow_html=True)
+        radar_df = pd.DataFrame(dict(
+            r=[avg_score/5*100, avg_attendance,  df_live['assignment_submission_rate'].mean(), df_live['quiz_avg_score'].mean(), df_live['video_completion_rate'].mean()],
+            theta=['Teaching Quality %', 'Attendance %', 'Assignments %', 'Quiz Avg %', 'Video Completion %']
+        ))
+        fig4 = go.Figure(data=go.Scatterpolar(
+            r=radar_df['r'],
+            theta=radar_df['theta'],
+            fill='toself',
+            name='Institutional Average',
+            line_color='#9b59b6'
+        ))
+        fig4.update_layout(
+            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+            showlegend=False,
+            margin=dict(l=40, r=40, t=20, b=20)
+        )
+        st.plotly_chart(fig4, use_container_width=True)
+
         # --- Formatted Data Tables ---
         st.markdown("<span class='card-header'>📈 Course Performance Breakdown</span>", unsafe_allow_html=True)
         
