@@ -126,8 +126,8 @@ with col_dashboard:
         # --- Formatted Data Tables ---
         st.markdown("<span class='card-header'>📈 Course Performance Breakdown</span>", unsafe_allow_html=True)
         
-        # Use pandas Styler to add color gradients to the dataframe for creativity
-        formatted_df = course_agg.style.background_gradient(subset=['avg_score'], cmap='Blues').format({
+        # Add formatting without requiring matplotlib
+        formatted_df = course_agg.style.format({
             'avg_score': "{:.2f}",
             'avg_attendance': "{:.1f}%"
         })
